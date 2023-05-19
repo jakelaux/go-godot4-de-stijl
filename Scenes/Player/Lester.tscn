@@ -1,0 +1,193 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://Scenes/Hitboxes and Hurtboxes/Hitbox.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Player/Dash.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Hitboxes and Hurtboxes/Hurtbox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scripts/Player/Player.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Player/character_sheet.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/Player/EnemyAttackParticles.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/Audio/hurt.wav" type="AudioStream" id=7]
+[ext_resource path="res://Assets/Audio/attack.wav" type="AudioStream" id=8]
+[ext_resource path="res://Assets/Audio/dash.wav" type="AudioStream" id=9]
+[ext_resource path="res://Assets/Audio/sound (6).wav" type="AudioStream" id=10]
+[ext_resource path="res://Assets/Player/loose-image.png" type="Texture" id=11]
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 12.5, 12.7352 )
+
+[sub_resource type="CapsuleShape2D" id=7]
+radius = 17.6243
+height = 0.0
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 8.9787, 10.5 )
+
+[sub_resource type="Animation" id=6]
+resource_name = "AttackLR"
+length = 0.35
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 3, 4, 5, 6, 7, 8, 3 ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "Idle"
+length = 0.75
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 3 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.7, 0.7 ), Vector2( 0.7, 0.63 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0.7, 0.7 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "walk"
+length = 0.3
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2 ]
+}
+
+[node name="Lester" type="KinematicBody2D"]
+collision_layer = 2
+collision_mask = 17
+script = ExtResource( 4 )
+ACCELERATION = 600
+MAX_SPEED = 130
+DASH_SPEED = 19000
+DASH_DURATION = 0.3
+FRICTION = 550
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.7, 0.7 )
+texture = ExtResource( 5 )
+hframes = 9
+
+[node name="Dash" parent="." instance=ExtResource( 2 )]
+
+[node name="Dust" parent="Dash" index="2"]
+position = Vector2( 0, 10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.264789, -1.5 )
+rotation = 1.5708
+shape = SubResource( 4 )
+
+[node name="HitboxPivot" type="Position2D" parent="."]
+
+[node name="Hitbox" parent="HitboxPivot" instance=ExtResource( 1 )]
+scale = Vector2( 0.75, 0.75 )
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" parent="HitboxPivot/Hitbox" index="0"]
+position = Vector2( 37.3333, 0 )
+rotation = 1.5708
+scale = Vector2( -2.26959, -1.51918 )
+shape = SubResource( 7 )
+disabled = true
+
+[node name="Hurtbox" parent="." instance=ExtResource( 3 )]
+scale = Vector2( 1, 1.0223 )
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+shape = SubResource( 5 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/AttackLR = SubResource( 6 )
+anims/Idle = SubResource( 8 )
+anims/RESET = SubResource( 2 )
+anims/walk = SubResource( 3 )
+
+[node name="EnemyAttackParticles" parent="." instance=ExtResource( 6 )]
+scale = Vector2( 0.25, 0.25 )
+
+[node name="HurtSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
+volume_db = -0.033
+
+[node name="DashSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 9 )
+volume_db = -0.286
+
+[node name="AttackSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+volume_db = -0.636
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 10 )
+
+[node name="loseImage" type="Sprite" parent="."]
+texture = ExtResource( 11 )
+
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
+
+[editable path="Dash"]
+[editable path="HitboxPivot/Hitbox"]
+[editable path="Hurtbox"]

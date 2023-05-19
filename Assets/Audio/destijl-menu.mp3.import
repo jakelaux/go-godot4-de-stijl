@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/destijl-menu.mp3-2125d4533771edd8c1f9d76dd2d58c09.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/destijl-menu.mp3"
+dest_files=[ "res://.import/destijl-menu.mp3-2125d4533771edd8c1f9d76dd2d58c09.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
